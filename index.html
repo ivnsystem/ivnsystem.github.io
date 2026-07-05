@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IVNS — Integer Version Numbering System</title>
+    <style>
+        /* Reset and base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.7;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem 3rem;
+        }
+
+        /* Logo */
+        .logo-wrapper {
+            width: 100%;
+            margin-bottom: 2.5rem;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #0b1120;
+        }
+
+        .logo-wrapper svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-top: 0.5rem;
+            margin-bottom: 0.25rem;
+            color: #0f172a;
+        }
+
+        .subhead {
+            font-size: 1.2rem;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-top: 2.5rem;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+            border-left: 5px solid #3b82f6;
+            padding-left: 1rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin: 0.5rem 0 1.2rem 1.8rem;
+        }
+
+        li {
+            margin-bottom: 0.3rem;
+        }
+
+        code {
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #0f172a;
+        }
+
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 1.2rem 0;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        .formula {
+            background: #f1f5f9;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            text-align: center;
+            margin: 1.2rem 0;
+            font-size: 1.2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: #0f172a;
+            color: white;
+            font-weight: 600;
+            padding: 0.7rem 0.8rem;
+            text-align: left;
+        }
+
+        td {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0.7rem 0.8rem;
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .highlight {
+            background: #fef9c3;
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+        }
+
+        .note {
+            background: #e0f2fe;
+            border-left: 5px solid #3b82f6;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .note strong {
+            color: #0f172a;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px dashed #cbd5e1;
+            margin: 2rem 0;
+        }
+
+        footer {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 0.4rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Логотип (SVG 1000x500) -->
+    <div class="logo-wrapper">
+        <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0f172a" />
+                    <stop offset="100%" stop-color="#1e293b" />
+                </linearGradient>
+                <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#3b82f6" />
+                    <stop offset="100%" stop-color="#60a5fa" />
+                </linearGradient>
+            </defs>
+
+            <!-- Background -->
+            <rect width="1000" height="500" fill="url(#bgGrad)" rx="12" />
+
+            <!-- Декоративные линии -->
+            <circle cx="850" cy="80" r="120" fill="none" stroke="#2d3b4f" stroke-width="2" opacity="0.4" />
+            <circle cx="850" cy="80" r="80" fill="none" stroke="#2d3b4f" stroke-width="1.5" opacity="0.3" />
+            <circle cx="150" cy="420" r="160" fill="none" stroke="#2d3b4f" stroke-width="2" opacity="0.4" />
+
+            <!-- Основной текст -->
+            <text x="500" y="220" font-family="'Segoe UI', Arial, sans-serif" font-size="130" font-weight="700" fill="white" text-anchor="middle" letter-spacing="4">
+                IVNS
+            </text>
+
+            <text x="500" y="290" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="300" fill="#94a3b8" text-anchor="middle" letter-spacing="6">
+                INTEGER VERSION NUMBERING SYSTEM
+            </text>
+
+            <!-- Подчёркивание акцентом -->
+            <line x1="350" y1="310" x2="650" y2="310" stroke="url(#accent)" stroke-width="4" stroke-linecap="round" />
+
+            <!-- Декоративные квадраты -->
+            <rect x="140" y="110" width="24" height="24" fill="#3b82f6" opacity="0.8" rx="4" />
+            <rect x="180" y="140" width="16" height="16" fill="#60a5fa" opacity="0.6" rx="3" />
+
+            <rect x="820" y="350" width="20" height="20" fill="#3b82f6" opacity="0.8" rx="4" />
+            <rect x="790" y="330" width="14" height="14" fill="#60a5fa" opacity="0.6" rx="3" />
+
+            <!-- Маленькая версия числа -->
+            <text x="500" y="410" font-family="'JetBrains Mono', monospace" font-size="24" fill="#475569" text-anchor="middle" opacity="0.7">
+                1.2.3  →  10203
+            </text>
+        </svg>
+    </div>
+
+    <!-- Заголовок статьи -->
+    <h1>Integer Version Numbering System (IVNS)</h1>
+    <div class="subhead">Полное описание стандартов и принципов</div>
+
+    <!-- Содержание -->
+
+    <section>
+        <h2>1. Введение: проблема строковых версий</h2>
+        <p>Семантическое версионирование (SemVer) стало де-факто стандартом для управления релизами. Однако его строковый формат вида <code>major.minor.patch-prerelease+build</code> создаёт серьёзные трудности при машинном сравнении. Лексикографическое сравнение не работает для числовых компонент (<code>1.10.0</code> &gt; <code>1.2.0</code>, но строка <code>"1.10.0"</code> меньше <code>"1.2.0"</code>), а разбор пре-релизных суффиксов требует сложных парсеров.</p>
+        <p><strong>IVNS (Integer Version Numbering System)</strong> предлагает простое решение: представить любую версию как одно целое число, где каждая компонента имеет фиксированный вес. Это позволяет сравнивать версии за O(1) и использовать стандартные операторы <code>&lt;</code>, <code>&gt;</code> в любых языках программирования, базах данных и системах контроля версий.</p>
+    </section>
+
+    <section>
+        <h2>2. Базовый принцип кодирования</h2>
+        <p>Любая версия в IVNS — это сумма произведений каждой компоненты на заранее определённый множитель (вес). Для трёхкомпонентной версии (<code>major.minor.patch</code>) формула имеет вид:</p>
+        <div class="formula">
+            IVNS = major · W<sub>major</sub> + minor · W<sub>minor</sub> + patch
+        </div>
+        <p>Где веса выбираются так, чтобы младшие компоненты никогда не переполняли старшие. Например, если <code>minor</code> и <code>patch</code> могут принимать значения до 99, то <code>W<sub>minor</sub> = 100</code>, а <code>W<sub>major</sub> = 100 · 100 = 10000</code>.</p>
+    </section>
+
+    <section>
+        <h2>3. Базовый стандарт: IVNS (Classic)</h2>
+        <p>Стандарт <strong>IVNS</strong> (также обозначается как <code>IVNS1x100</code>) использует веса:</p>
+        <ul>
+            <li><code>W<sub>minor</sub> = 100</code></li>
+            <li><code>W<sub>major</sub> = 100 · 100 = 10000</code></li>
+        </ul>
+        <p>Тогда версия <code>1.2.3</code> превращается в:</p>
+        <pre><code>1 * 10000 + 2 * 100 + 3 = 10203</code></pre>
+        <p>Этот стандарт поддерживает до 99 патчей в рамках одного минора и до 99 миноров в рамках одного мажора. Он идеально подходит для стабильных проектов с нечастыми релизами.</p>
+        <p><strong>Примеры сравнения:</strong></p>
+        <ul>
+            <li><code>1.2.3</code> → <code>10203</code></li>
+            <li><code>1.2.10</code> → <code>10210</code> (больше, чем <code>10203</code>, корректно)</li>
+            <li><code>1.10.0</code> → <code>11000</code> (больше, чем <code>10210</code>, корректно)</li>
+            <li><code>2.0.0</code> → <code>20000</code> (больше, чем <code>11000</code>, корректно)</li>
+        </ul>
+        <p>Все сравнения выполняются как сравнение целых чисел.</p>
+    </section>
+
+    <section>
+        <h2>4. Вариации шага (Spacing)</h2>
+        <p>В некоторых проектах количество патчей или миноров может превышать 99. Для этого предусмотрены стандарты с изменённым шагом:</p>
+        <ul>
+            <li><strong>IVNSx10 (Tiny)</strong>: <code>W<sub>minor</sub> = 10</code>, <code>W<sub>major</sub> = 100</code>. Версия <code>1.2.3</code> → <code>1*100 + 2*10 + 3 = 123</code>. Поддерживает до 9 патчей и 9 миноров. Используется для скриптов, конфигураций, встраиваемых систем, где важна компактность.</li>
+            <li><strong>IVNSx1000</strong>: <code>W<sub>minor</sub> = 1000</code>, <code>W<sub>major</sub> = 1 000 000</code>. Версия <code>1.2.3</code> → <code>1*1 000 000 + 2*1000 + 3 = 1002003</code>. Поддерживает до 999 патчей.</li>
+            <li><strong>IVNSxN</strong>: Обобщение, где шаг выбирается произвольно (например, <code>x10</code>, <code>x100</code>, <code>x1000</code> и т.д.). Обозначение <code>IVNSxS</code>, где <code>S</code> – величина шага.</li>
+        </ul>
+        <div class="note">
+            <strong>Важно:</strong> при выборе шага необходимо гарантировать, что максимальное значение младшей компоненты не превышает <code>S-1</code>. Если это условие нарушается, следует перейти на больший шаг.
+        </div>
+    </section>
+
+    <section>
+        <h2>5. Пре-релизные версии и множитель M</h2>
+        <p>SemVer поддерживает пре-релизы (alpha, beta, rc) через суффиксы. В IVNS для их кодирования используется <strong>резервирование места</strong> под пре-релизные номера. Для этого вводится дополнительный множитель <code>M</code>, который определяет количество целых чисел, отведённых под пре-релизы между двумя соседними релизными версиями.</p>
+        <p>Стандарт с пре-релизным слотом обозначается как <code>IVNS{M}x{S}</code>, где:</p>
+        <ul>
+            <li><code>M</code> – множитель (количество позиций для пре-релизов),</li>
+            <li><code>S</code> – шаг между компонентами (как в предыдущем разделе).</li>
+        </ul>
+        <p>Для релизной версии <code>major.minor.patch</code> в стандарте <code>IVNS{M}x{S}</code> базовое число вычисляется как:</p>
+        <div class="formula">
+            B = major · S<sup>2</sup> + minor · S + patch
+        </div>
+        <p>Тогда:</p>
+        <ul>
+            <li><strong>Релизная версия</strong> имеет номер <code>B · M</code> (умножение на M освобождает младшие разряды).</li>
+            <li><strong>Пре-релизная версия</strong>, относящаяся к будущему релизу <code>major.minor.(patch+1)</code>, имеет номер <code>B · M + k</code>, где <code>k</code> от 1 до <code>M-1</code>.</li>
+        </ul>
+        <p>Такая схема означает, что пре-релизный номер всегда привязан к <strong>предыдущему релизному патчу</strong>. Это соответствует SemVer, где <code>1.2.4-alpha.1 &lt; 1.2.4</code> и при этом <code>1.2.4-alpha.1</code> численно больше, чем <code>1.2.3</code> (что логично, так как он идёт после <code>1.2.3</code> во времени).</p>
+        <p><strong>Пример для IVNS100x100 (S=100, M=100):</strong></p>
+        <ul>
+            <li><code>1.2.3</code> → <code>(1·10000 + 2·100 + 3) · 100 = 1020300</code></li>
+            <li><code>1.2.4-alpha.1</code> → <code>1020300 + 1 = 1020301</code></li>
+            <li><code>1.2.4</code> → <code>(1·10000 + 2·100 + 4) · 100 = 1020400</code></li>
+        </ul>
+        <p>Иерархия: <code>1020301 &lt; 1020400</code> — полностью корректно.</p>
+    </section>
+
+    <section>
+        <h2>6. Зоны пре-релизной стабильности</h2>
+        <p>Вместо введения отдельных стандартов типа <code>+half</code>, мы определяем внутри интервала <code>[1, M-1]</code> <strong>зоны</strong>, которые кодируют степень готовности:</p>
+        <ul>
+            <li><strong>Зона нестабильных сборок (alpha, dev, nightly):</strong> <code>k</code> от 1 до <code>floor((M-1)/2)</code> (например, до 50, если M=100).</li>
+            <li><strong>Зона кандидатов в релиз (beta, rc):</strong> <code>k</code> от <code>floor((M-1)/2)+1</code> до <code>M-1</code> (например, 51–99).</li>
+        </ul>
+        <p>Релизная версия имеет <code>k = 0</code> (номер кратен M). Тогда сравнение всегда корректно:</p>
+        <ul>
+            <li><code>1.2.4-alpha.1</code> → <code>B·M + 1</code></li>
+            <li><code>1.2.4-rc.1</code> → <code>B·M + 51</code></li>
+            <li><code>1.2.4</code> → <code>(B+1)·M</code></li>
+        </ul>
+        <p>Зоны делают систему самодокументируемой: по числу можно сразу понять стадию разработки, не парся строки.</p>
+    </section>
+
+    <section>
+        <h2>7. Стандарты IVNS: сводная таблица</h2>
+        <p>Ниже приведены основные стандарты, их обозначения и примеры для версии <code>1.2.3</code> (без пре-релизов) и для пре-релизов.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Обозначение</th>
+                    <th>Шаг (S)</th>
+                    <th>Множитель (M)</th>
+                    <th>Релиз <code>1.2.3</code></th>
+                    <th>Пре-релиз <code>1.2.4-alpha.1</code></th>
+                    <th>Релиз <code>1.2.4</code></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>IVNS</code> (Classic)</td>
+                    <td>100</td>
+                    <td>1 (без пре-релизов)</td>
+                    <td><code>10203</code></td>
+                    <td>—</td>
+                    <td><code>10204</code></td>
+                </tr>
+                <tr>
+                    <td><code>IVNSx10</code> (Tiny)</td>
+                    <td>10</td>
+                    <td>1</td>
+                    <td><code>123</code></td>
+                    <td>—</td>
+                    <td><code>124</code></td>
+                </tr>
+                <tr>
+                    <td><code>IVNSx1000</code></td>
+                    <td>1000</td>
+                    <td>1</td>
+                    <td><code>1002003</code></td>
+                    <td>—</td>
+                    <td><code>1002004</code></td>
+                </tr>
+                <tr>
+                    <td><code>IVNS10</code></td>
+                    <td>100</td>
+                    <td>10</td>
+                    <td><code>102030</code></td>
+                    <td><code>102031</code></td>
+                    <td><code>102040</code></td>
+                </tr>
+                <tr>
+                    <td><code>IVNS100</code></td>
+                    <td>100</td>
+                    <td>100</td>
+                    <td><code>1020300</code></td>
+                    <td><code>1020301</code></td>
+                    <td><code>1020400</code></td>
+                </tr>
+                <tr>
+                    <td><code>IVNS1K</code></td>
+                    <td>100</td>
+                    <td>1000</td>
+                    <td><code>10203000</code></td>
+                    <td><code>10203001</code></td>
+                    <td><code>10204000</code></td>
+                </tr>
+                <tr>
+                    <td><code>IVNS100x10</code></td>
+                    <td>10</td>
+                    <td>100</td>
+                    <td><code>12300</code></td>
+                    <td><code>12301</code></td>
+                    <td><code>12400</code></td>
+                </tr>
+                <tr>
+                    <td><code>IVNS10x10</code> (Tiny с пре-релизами)</td>
+                    <td>10</td>
+                    <td>10</td>
+                    <td><code>1230</code></td>
+                    <td><code>1231</code></td>
+                    <td><code>1240</code></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="note">
+            <strong>Примечание:</strong> Стандарты с <code>M=1</code> не поддерживают пре-релизы – они предназначены для финальных релизов, когда пре-релизные циклы логируются отдельно (например, в системе сборки).
+        </div>
+    </section>
+
+    <section>
+        <h2>8. Правило миграции между стандартами</h2>
+        <p>Переход от одного стандарта IVNS к другому – ответственная операция, так как он меняет числовые значения всех версий. Чтобы избежать коллизий и нарушения монотонности, вводится <strong>Закон монотонности IVNS</strong>:</p>
+        <ol>
+            <li><strong>Переход разрешён только при смене мажорной версии</strong> (например, с <code>v1.x.x</code> на <code>v2.0.0</code>).</li>
+            <li><strong>Новый стандарт должен иметь множитель M больше или равный старому</strong> (или шаг S больше, но в первую очередь M). Переход на меньший M <strong>запрещён</strong>, потому что тогда старые пре-релизные номера могут стать больше новых релизных.</li>
+            <li>Переход на больший шаг S (например, с <code>x10</code> на <code>x100</code>) также допустим только в сторону увеличения, чтобы сохранить порядок: любая версия в новом стандарте должна быть больше любой версии в старом.</li>
+        </ol>
+        <p><strong>Пример допустимой цепочки:</strong></p>
+        <ul>
+            <li>Проект начинается с <code>IVNS10x10</code> (<code>1.2.3 = 1230</code>).</li>
+            <li>После выхода <code>v2.0.0</code> команда решает перейти на <code>IVNS100x10</code> (<code>1.2.3 = 12300</code>). Это безопасно, потому что все старые версии (максимум <code>1.9.9</code> в старом стандарте будут меньше <code>12300</code> при <code>v2.0.0</code>).</li>
+        </ul>
+        <p><strong>Запрещённый переход:</strong> из <code>IVNS100</code> (M=100) в <code>IVNS10</code> (M=10). Тогда старый релиз <code>1.9.9</code> = <code>(1·10000+9·100+9)·100 = 1090900</code>, а новый <code>2.0.0</code> = <code>20000·10 = 200000</code> – старый релиз больше нового, что ломает монотонность.</p>
+        <div class="note">
+            <strong>Вывод:</strong> переход на меньший M или S – категорически запрещён.
+        </div>
+    </section>
+
+    <section>
+        <h2>9. Заключение: преимущества IVNS</h2>
+        <ul>
+            <li><strong>Универсальность:</strong> IVNS работает в любых средах, поддерживающих целочисленное сравнение (SQL, JSON, YAML, встроенные системы).</li>
+            <li><strong>Простота:</strong> не нужны парсеры строк, регулярные выражения или семантические анализаторы.</li>
+            <li><strong>Гибкость:</strong> выбор шага и множителя позволяет адаптировать систему под частоту релизов и необходимость пре-релизов.</li>
+            <li><strong>Предсказуемость:</strong> пре-релизы всегда идут в хронологическом порядке, и зоны явно указывают на стадию готовности.</li>
+            <li><strong>Безопасная миграция:</strong> чёткие правила перехода между стандартами гарантируют сохранение порядка версий на протяжении всего жизненного цикла продукта.</li>
+        </ul>
+        <p>IVNS не заменяет семантическую значимость мажорных, минорных и патч-версий, а лишь предоставляет надёжный числовой эквивалент для машинной обработки. Разработчики могут продолжать использовать SemVer для человеческого восприятия, а в системах сборки, базах данных и при проверке обновлений применять IVNS – и быть уверенными, что сравнение всегда корректно.</p>
+    </section>
+
+    <hr>
+
+    <footer>
+        © 2026 • IVNS — Integer Version Numbering System • Документ подготовлен в рамках открытой спецификации.
+    </footer>
+
+</div>
+</body>
+</html>
