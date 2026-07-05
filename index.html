@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IVNS — Integer Version Numbering System</title>
     <style>
-        /* Reset and base */
         * {
             margin: 0;
             padding: 0;
@@ -29,7 +28,6 @@
             padding: 2.5rem 3rem;
         }
 
-        /* Logo */
         .logo-wrapper {
             width: 100%;
             margin-bottom: 2.5rem;
@@ -44,7 +42,6 @@
             height: auto;
         }
 
-        /* Typography */
         h1 {
             font-size: 2.6rem;
             font-weight: 700;
@@ -188,7 +185,6 @@
             padding-top: 1.5rem;
         }
 
-        /* Responsive */
         @media (max-width: 640px) {
             .container {
                 padding: 1.5rem 1rem;
@@ -215,7 +211,6 @@
 <body>
 <div class="container">
 
-    <!-- Логотип (SVG 1000x500) -->
     <div class="logo-wrapper">
         <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -229,15 +224,12 @@
                 </linearGradient>
             </defs>
 
-            <!-- Background -->
             <rect width="1000" height="500" fill="url(#bgGrad)" rx="12" />
 
-            <!-- Декоративные линии -->
             <circle cx="850" cy="80" r="120" fill="none" stroke="#2d3b4f" stroke-width="2" opacity="0.4" />
             <circle cx="850" cy="80" r="80" fill="none" stroke="#2d3b4f" stroke-width="1.5" opacity="0.3" />
             <circle cx="150" cy="420" r="160" fill="none" stroke="#2d3b4f" stroke-width="2" opacity="0.4" />
 
-            <!-- Основной текст -->
             <text x="500" y="220" font-family="'Segoe UI', Arial, sans-serif" font-size="130" font-weight="700" fill="white" text-anchor="middle" letter-spacing="4">
                 IVNS
             </text>
@@ -246,28 +238,22 @@
                 INTEGER VERSION NUMBERING SYSTEM
             </text>
 
-            <!-- Подчёркивание акцентом -->
             <line x1="350" y1="310" x2="650" y2="310" stroke="url(#accent)" stroke-width="4" stroke-linecap="round" />
 
-            <!-- Декоративные квадраты -->
             <rect x="140" y="110" width="24" height="24" fill="#3b82f6" opacity="0.8" rx="4" />
             <rect x="180" y="140" width="16" height="16" fill="#60a5fa" opacity="0.6" rx="3" />
 
             <rect x="820" y="350" width="20" height="20" fill="#3b82f6" opacity="0.8" rx="4" />
             <rect x="790" y="330" width="14" height="14" fill="#60a5fa" opacity="0.6" rx="3" />
 
-            <!-- Маленькая версия числа -->
             <text x="500" y="410" font-family="'JetBrains Mono', monospace" font-size="24" fill="#475569" text-anchor="middle" opacity="0.7">
                 1.2.3  →  10203
             </text>
         </svg>
     </div>
 
-    <!-- Заголовок статьи -->
     <h1>Integer Version Numbering System (IVNS)</h1>
     <div class="subhead">Полное описание стандартов и принципов</div>
-
-    <!-- Содержание -->
 
     <section>
         <h2>1. Введение: проблема строковых версий</h2>
